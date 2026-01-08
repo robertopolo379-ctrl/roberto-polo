@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://localhost:8000/ -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roberto Polo | Digitalización</title>
+    <link href="./Roberto Polo _ Digitalización_files/css2" rel="stylesheet">
+    <style>
+        :root { --gold: #c5a059; --black: #121212; --white: #ffffff; --gray: #f9f9f9; --insta: #E1306C; }
+        * { box-sizing: border-box; scroll-behavior: smooth; }
+        body { font-family: 'Poppins', sans-serif; margin: 0; background: var(--white); color: var(--black); }
+
+        header { 
+            height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2072&auto=format&fit=crop');
+            background-size: cover; background-position: center; color: white; text-align: center; padding: 20px;
+        }
+        header h1 { font-family: 'Anton', sans-serif; font-size: 4rem; margin: 0; color: var(--gold); text-transform: uppercase; }
+        
+        .social-container { display: flex; gap: 15px; margin-top: 25px; }
+        .btn-social { padding: 10px 25px; border-radius: 50px; text-decoration: none; font-weight: 600; color: white; border: 2px solid transparent; transition: 0.3s; }
+        .btn-gmail { background: var(--black); border-color: var(--gold); color: var(--gold); }
+        .btn-insta { background: var(--insta); }
+
+        section { padding: 60px 20px; max-width: 900px; margin: auto; }
+        .section-title { font-family: 'Anton', sans-serif; font-size: 2.5rem; text-align: center; margin-bottom: 30px; }
+
+        .contact-container { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .reserva-box { background: white; padding: 20px; border: 2px solid var(--black); border-radius: 12px; box-shadow: 8px 8px 0 var(--gold); }
+        
+        .grid-dias { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+        .dia { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; background: #eee; border-radius: 5px; cursor: pointer; font-size: 0.8rem; }
+        .dia:hover:not(.pasado) { background: var(--gold); color: white; }
+        .hoy { background: var(--black) !important; color: var(--gold); font-weight: bold; }
+        .seleccionado { background: var(--gold) !important; color: white !important; }
+        .pasado { opacity: 0.2; cursor: not-allowed; }
+
+        input { width: 100%; padding: 12px; margin-top: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        .btn-confirmar { width: 100%; padding: 15px; background: var(--black); color: var(--gold); border: none; font-family: 'Anton'; font-size: 1.2rem; margin-top: 20px; cursor: pointer; border-radius: 5px; }
+
+        #modalHoras { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; align-items: center; justify-content: center; }
+        .modal-content { background: white; padding: 30px; border-radius: 10px; width: 90%; max-width: 350px; text-align: center; border: 3px solid var(--gold); }
+        .time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        .btn-time { padding: 10px; border: 1px solid var(--black); background: white; cursor: pointer; font-weight: bold; }
+        .ocupada { background: #eee; color: #ccc; cursor: not-allowed; text-decoration: line-through; }
+
+        footer { text-align: center; padding: 40px; background: var(--black); color: #666; font-size: 0.8rem; }
+        @media (max-width: 768px) { .contact-container { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Roberto Polo</h1>
+    <p>Digitalización &amp; Diseño Web Profesional</p>
+    <div class="social-container">
+        <a href="mailto:rpolopolo2010@gmail.com" class="btn-social btn-gmail">Email</a>
+        <a href="https://www.instagram.com/robertopoloo_?igsh=MXJpMW5qZWtpd3pnYg==" target="_blank" class="btn-social btn-insta">Instagram</a>
+    </div>
+</header>
+
+<section id="sobre-mi">
+    <h2 class="section-title">Sobre Mí</h2>
+    <div style="background:var(--gray); padding:30px; border-radius:15px; border-left:5px solid var(--gold);">
+        <p>Soy Roberto Polo, emprendedor de 16 años especializado en la creación de soluciones digitales. Mi objetivo es ayudar a marcas y negocios a destacar con diseños modernos y sistemas de reserva eficientes.</p>
+    </div>
+</section>
+
+<section id="contacto">
+    <h2 class="section-title">Reserva una llamada</h2>
+    <div class="contact-container">
+        <div>
+            <form method="POST">
+                <input type="hidden" name="fecha_seleccionada" id="fIn">
+                <input type="hidden" name="hora" id="hIn">
+                <input type="text" name="nombre" placeholder="Tu nombre" required="">
+                <input type="email" name="correo" placeholder="Tu email (Opcional)">
+                <input type="tel" name="telefono" placeholder="Tu teléfono" required="">
+                <div id="resumen-cita" style="margin-top:15px; color:var(--gold); font-weight:bold; text-align:center;"></div>
+                <button type="submit" name="confirmar" class="btn-confirmar">AGENDAR AHORA</button>
+            </form>
+            <p style="color:var(--gold); text-align:center; margin-top:15px;">¡Cita agendada! El correo ha sido enviado a Roberto.</p>        </div>
+        <div class="reserva-box">
+            <div id="mesTxt" style="text-align:center; font-weight:bold; margin-bottom:10px; color:var(--gold);">ENERO</div>
+            <div class="grid-dias" id="dias"><div></div><div></div><div></div><div class="dia pasado">1</div><div class="dia pasado">2</div><div class="dia pasado">3</div><div class="dia pasado">4</div><div class="dia pasado">5</div><div class="dia pasado">6</div><div class="dia hoy">7</div><div class="dia">8</div><div class="dia">9</div><div class="dia">10</div><div class="dia">11</div><div class="dia">12</div><div class="dia">13</div><div class="dia">14</div><div class="dia">15</div><div class="dia">16</div><div class="dia">17</div><div class="dia">18</div><div class="dia">19</div><div class="dia">20</div><div class="dia">21</div><div class="dia">22</div><div class="dia">23</div><div class="dia">24</div><div class="dia">25</div><div class="dia">26</div><div class="dia">27</div><div class="dia">28</div><div class="dia">29</div><div class="dia">30</div><div class="dia">31</div></div>
+        </div>
+    </div>
+</section>
+
+<div id="modalHoras">
+    <div class="modal-content">
+        <h3 style="margin:0;">HORARIOS</h3>
+        <p id="fechaLabel" style="font-weight:bold;"></p>
+        <div class="time-grid" id="horasGrid"></div>
+        <button onclick="cerrarModal()" style="margin-top:15px; background:none; border:none; color:red; cursor:pointer;">Cerrar</button>
+    </div>
+</div>
+
+<footer>ROBERTO POLO © 2026</footer>
+
+<script>
+const ocupadas = {"":[""],"2026-01-08":["15:00","16:00"]};
+const franjas = ["15:00", "16:00", "17:00", "18:00", "19:00", "20:00"];
+let fBase = new Date();
+const hoy = new Date(); hoy.setHours(0,0,0,0);
+
+function cargarCalendario() {
+    const cont = document.getElementById("dias"); cont.innerHTML = "";
+    const m = fBase.getMonth(), a = fBase.getFullYear();
+    document.getElementById("mesTxt").innerText = fBase.toLocaleString('es', { month: 'long' }).toUpperCase();
+    
+    let pD = new Date(a, m, 1).getDay(); 
+    pD = (pD === 0) ? 6 : pD - 1; 
+
+    for(let i=0; i<pD; i++) cont.innerHTML += '<div></div>';
+    
+    for(let i=1; i<=new Date(a, m+1, 0).getDate(); i++) {
+        let d = document.createElement("div"), fStr = `${a}-${(m+1).toString().padStart(2,'0')}-${i.toString().padStart(2,'0')}`;
+        d.className = "dia"; d.innerText = i;
+        let dC = new Date(a, m, i);
+        if(dC < hoy) d.classList.add("pasado");
+        if(dC.getTime() === hoy.getTime()) d.classList.add("hoy");
+        d.onclick = () => { if(dC >= hoy) abrirHoras(fStr); };
+        cont.appendChild(d);
+    }
+}
+
+function abrirHoras(f) {
+    document.getElementById("fIn").value = f;
+    document.getElementById("fechaLabel").innerText = f;
+    const grid = document.getElementById("horasGrid"); grid.innerHTML = "";
+    const ocu = ocupadas[f] || [];
+
+    franjas.forEach(h => {
+        let b = document.createElement("button");
+        const isO = ocu.includes(h);
+        b.className = "btn-time" + (isO ? " ocupada" : "");
+        b.innerText = isO ? "PILLADO" : h;
+        if(!isO) {
+            b.onclick = () => {
+                document.getElementById("hIn").value = h;
+                document.getElementById("resumen-cita").innerText = "Cita el " + f + " a las " + h;
+                cerrarModal();
+            };
+        }
+        grid.appendChild(b);
+    });
+    document.getElementById("modalHoras").style.display = "flex";
+}
+
+function cerrarModal() { document.getElementById("modalHoras").style.display = "none"; }
+cargarCalendario();
+</script>
+
+
+</body></html>
